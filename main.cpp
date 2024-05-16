@@ -4,14 +4,18 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
 /**
+ * This function is to encrypt the plaintext using XOR encryption method
+ * @param plaintext is the text that the user wants to encrypt
+ * @param key is the key that the user wants to use to encrypt the plaintext
+ * @return the encrypted text
  *
- * @param plaintext
- * @param key
- * @return
+ * Some part of the code under here was taken out of an old project I done at Digipen and with the Help of the a student teacher there -Zhi
+ *
  */
 string encryptTransposition(const string& plaintext, const string& key) {
     // Step 1: Create a matrix based on the key
@@ -42,10 +46,10 @@ string encryptTransposition(const string& plaintext, const string& key) {
 }
 
 /**
- *
- * @param ciphertext
- * @param key
- * @return
+ * This function is to decrypt the ciphertext using XOR encryption method
+ * @param ciphertext is the text that the user wants to decrypt
+ * @param key is the key that the user wants to use to decrypt the ciphertext
+ * @return the decrypted text
  */
 string decryptTransposition(const string& ciphertext, const string& key) {
     // Step 1: Create a matrix based on the key
@@ -127,8 +131,29 @@ int main() {
     // Main loop to navigate the user to choose the encryption method and the encryption cycle.
     while (!encryption_done) {
         string plaintext;
-        cout << "Please enter a plaintext:";
-        cin >> plaintext;
+        int plaintext_choice;
+        cout << "Please choose which method of entering the plaintext you want to use (1 for manual entry, otherwise for file entry):";
+        cin >> plaintext_choice;
+        if (plaintext_choice == 1) {
+            cout << "Please enter a plaintext:";
+            getline(cin, plaintext);
+        } else {
+            cout << "Please enter the file name:";
+            string file_name;
+            cin >> file_name;
+            // Read the file and store the content in the plaintext
+            ifstream file(file_name);
+            if (file.is_open()) {
+                string line;
+                while (getline(file, line)) {
+                    plaintext += line + "\n";  // Add each line and a newline character
+                }
+                file.close();
+            } else {
+                cout << "Unable to open the file. Please try again." << endl;
+                continue;
+            }
+        }
 
         // Choose the encryption method
         int encryption_method;
@@ -158,7 +183,7 @@ int main() {
             for (size_t i = 0; i < plaintext.size(); ++i) {
                 ciphertext[i] = plaintext[i] ^ key[i];
             }
-            cout << "Ciphertext: " << ciphertext << endl;
+            cout << "Ciphertext: " << ciphertext << endl << endl;
 
             // XOR Decryption
             string decrypted_text = ciphertext;
@@ -169,7 +194,7 @@ int main() {
 
             TryAgainOrNot(encryption_done);
         }
-        // Transposition Cipher
+            // Transposition Cipher
         else if (encryption_method == 2) {
             string key = "";
             string key_choice;
@@ -185,11 +210,11 @@ int main() {
 
             // Encryption
             std::string ciphertext = encryptTransposition(plaintext, key);
-            std::cout << "Ciphertext: " << ciphertext << std::endl;
+            std::cout << "Ciphertext: " << ciphertext << endl << endl;
 
             // Decryption
             std::string decryptedText = decryptTransposition(ciphertext, key);
-            std::cout << "Decrypted Text: " << decryptedText << std::endl;
+            std::cout << "Decrypted Text: " << decryptedText << endl << endl;
 
             TryAgainOrNot(encryption_done);
         }
