@@ -138,7 +138,7 @@ int main() {
             cout << "Please enter a plaintext:";
             getline(cin, plaintext);
         } else {
-            cout << "Please enter the file name:";
+            cout << "Please enter the file name (use absolute path):";
             string file_name;
             cin >> file_name;
             // Read the file and store the content in the plaintext
@@ -170,12 +170,13 @@ int main() {
             string key_choice;
             cout << "Do you want to enter a key or randomly auto-generated? (1 for manually entered, otherwise for auto-generated):";
             cin >> key_choice;
+            cout << endl;
             if (key_choice == "1") {
                 cout << "Please enter a key:";
                 cin >> key;
             } else {
                 key = GenerateRandomKey(encryption_method);
-                cout << "Generated key: " << key << endl;
+                cout << "Generated key: " << key << endl << endl;
             }
 
             // XOR Encryption
@@ -183,14 +184,14 @@ int main() {
             for (size_t i = 0; i < plaintext.size(); ++i) {
                 ciphertext[i] = plaintext[i] ^ key[i];
             }
-            cout << "Ciphertext: " << ciphertext << endl << endl;
+            cout << "Ciphertext:\n\n" << ciphertext << endl << endl;
 
             // XOR Decryption
             string decrypted_text = ciphertext;
             for (size_t i = 0; i < ciphertext.size(); ++i) {
                 decrypted_text[i] = decrypted_text[i] ^ key[i];
             }
-            cout << "Decrypted text: " << decrypted_text << endl << endl;
+            cout << "Decrypted text:\n" << decrypted_text << endl << endl;
 
             TryAgainOrNot(encryption_done);
         }
@@ -205,16 +206,16 @@ int main() {
                 cin >> key;
             } else {
                 key = GenerateRandomKey(encryption_method);
-                cout << "Generated key: " << key << endl;
+                cout << "Generated key: " << key << endl << endl;
             }
 
             // Encryption
             std::string ciphertext = encryptTransposition(plaintext, key);
-            std::cout << "Ciphertext: " << ciphertext << endl << endl;
+            std::cout << "Ciphertext:\n\n" << ciphertext << endl << endl;
 
             // Decryption
             std::string decryptedText = decryptTransposition(ciphertext, key);
-            std::cout << "Decrypted Text: " << decryptedText << endl << endl;
+            std::cout << "Decrypted Text:\n" << decryptedText << endl << endl;
 
             TryAgainOrNot(encryption_done);
         }
